@@ -36,5 +36,7 @@ int main(int argc, char *argv[])
     while (!feof(src)){
         int16_t symbol = getc(src);
         writeEncodeSymbol(&symbol,typecode,dst);}
+    fclose(src);
+    fclose(dst);
     return 0;
 }
