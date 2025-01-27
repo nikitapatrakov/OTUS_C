@@ -25,7 +25,7 @@ int main(int argc, char** argv)
 		return 1;
 	}
 
-	__off_t fileSize = (__off_t)file_stats.st_size;
+	off_t fileSize = (off_t)file_stats.st_size;
 
 	if (!checkRarjpegFile(file, fileSize))
 	{
