@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 
-#define VALID_ZIP_SIGNATURE (0x04034b50)
-#define CENTRAL_DIRECTORY_EOCD (0x06054b50)
+#define CDFH (0x02014b50)
+#define EOCD (0x06054b50)
 
 
 #pragma pack(push, 1)

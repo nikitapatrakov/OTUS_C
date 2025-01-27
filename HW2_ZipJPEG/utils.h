@@ -3,8 +3,9 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <sys/stat.h>
 
-bool		checkRarjpegFile(FILE *file, __off_t fileSize);
-void		printCont(FILE *file, __off_t fileSize);
+bool		checkRarjpegFile(FILE *file, off_t fileSize);
+void		printCont(FILE *file, off_t fileSize);
 
 #endif // UTILS_H
