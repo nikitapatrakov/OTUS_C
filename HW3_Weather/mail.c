@@ -1,27 +1,22 @@
 #include <stdio.h>
-#include <curl/curl.h>
+#include <stdlib.h>
+
+#include "getter.h"
  
-int main(void)
+int main(int argc, char **argv)
 {
-  CURL *curl;
-  CURLcode res;
- 
-  curl = curl_easy_init();
-  if(curl) {
-    curl_easy_setopt(curl, CURLOPT_URL, "https://www.example.com/");
-    res = curl_easy_perform(curl);
- 
-    if(CURLE_OK == res) {
-      char *ct;
-      /* ask for the content-type */
-      res = curl_easy_getinfo(curl, CURLINFO_CONTENT_TYPE, &ct);
- 
-      if((CURLE_OK == res) && ct)
-        printf("We received Content-Type: %s\n", ct);
-    }
- 
-    /* always cleanup */
-    curl_easy_cleanup(curl);
+  if (argc != 2)
+  {
+    printf("Не верные параметры");
+    return 1;
   }
+  char *url = get_url(argv[1]);
+  if (url==NULL)
+  {
+    printf("Не удалось сгенерировать ссылку");
+    return 1;
+  }
+  char *resp = get_data(url);
+  free(url);
   return 0;
 }
