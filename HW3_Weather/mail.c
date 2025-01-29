@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "getter.h"
+#include "parser.h"
  
 int main(int argc, char **argv)
 {
@@ -17,6 +18,11 @@ int main(int argc, char **argv)
     return 1;
   }
   char *resp = get_data(url);
+
   free(url);
+
+  parse_weather_json(resp);
+
+
   return 0;
 }
