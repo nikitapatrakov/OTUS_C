@@ -1,0 +1,9 @@
+dir = g_dir_open(a, 0, &error);
+    while (filename=g_dir_read_name(dir)){
+        printf("%s\n", filename);
+        if (g_file_test(filename, G_FILE_TEST_IS_DIR)) {
+            dir2 = g_dir_open(filename, 0, &error);
+            while (filename=g_dir_read_name(dir2)){
+                printf("    %s\n", filename);
+        }
+    }
