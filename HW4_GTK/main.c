@@ -1,26 +1,28 @@
-#include <glib.h>
-#include <stdio.h>
+#include <gtk/gtk.h>
 
-void get_recursive_date(const gchar* a) {
-    GDir *dir;
-    GError *error = NULL;
-    const gchar *filename;
-    dir = g_dir_open(a, 0, &error);
-    while (filename=g_dir_read_name(dir)){
-        printf("%s\n", filename);
-        if (g_file_test(filename, G_FILE_TEST_IS_DIR)) {
-            get_recursive_date(filename);
-        }
-    }
+static void
+activate (GtkApplication* app,
+          gpointer        user_data)
+{
+  GtkWidget *window;
+
+  window = gtk_application_window_new (app);
+  gtk_window_set_title (GTK_WINDOW (window), "Window");
+  gtk_window_set_default_size (GTK_WINDOW (window), 200, 200);
+  gtk_window_present (GTK_WINDOW (window));
 }
 
-int main()
-{   
-    GDir *dir, *dir2;
-    GError *error = NULL;
-    const gchar *filename;
+int
+main (int    argc,
+      char **argv)
+{
+  GtkApplication *app;
+  int status;
 
-    gchar* a = g_get_current_dir();
-    get_recursive_date(a);
-    return 0;
+  app = gtk_application_new ("org.gtk.example", G_APPLICATION_DEFAULT_FLAGS);
+  g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
+  status = g_application_run (G_APPLICATION (app), argc, argv);
+  g_object_unref (app);
+
+  return status;
 }
