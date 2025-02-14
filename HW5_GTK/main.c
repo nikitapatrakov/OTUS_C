@@ -1,27 +1,65 @@
-#include <glib.h>
-#include <stdio.h>
+#include <gtk/gtk.h>
 
-void get_recursive_date(const gchar* a) {
-    GDir *dir;
-    GError *error = NULL;
-    const gchar *filename;
-    dir = g_dir_open(a, 0, &error);
-    while (filename=g_dir_read_name(dir)){
-        gchar *fullpath = g_build_filename(a, filename, NULL);
-        printf("%s\n", filename);
-        if (g_file_test(fullpath, G_FILE_TEST_IS_DIR)) {
-            get_recursive_date(fullpath);
-        }
-    }
+
+static GListModel *create_list_model_cb(gpointer item, gpointer user_data)
+{
+    // Создаём список для хранения элементов собственного типа GtkDbRow
+    GListStore *list_store = g_list_store_new(G_TYPE_STRING);
+    g_list_store_append(list_store, "nikita");
+    g_list_store_append(list_store, "anna");
+    return G_LIST_MODEL(list_store);
 }
 
-int main()
-{   
-    GDir *dir, *dir2;
-    GError *error = NULL;
-    const gchar *filename;
+static void
+print_hello (GtkWidget *widget,
+             gpointer   data)
+{
+  g_print ("Hello World\n");
+}
 
-    gchar* a = g_get_current_dir();
-    get_recursive_date(a);
-    return 0;
+static void
+activate (GtkApplication *app,
+          gpointer        user_data)
+{
+  GtkWidget *window;
+  GtkWidget *button;
+  GtkWidget *box;
+  GtkWidget *col;
+
+  col = gtk_column_view_new(NULL);
+  window = gtk_application_window_new (app);
+  gtk_window_set_title (GTK_WINDOW (window), "Window");
+  gtk_window_set_default_size (GTK_WINDOW (window), 200, 200);
+
+  box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+  gtk_widget_set_halign (box, GTK_ALIGN_CENTER);
+  gtk_widget_set_valign (box, GTK_ALIGN_CENTER);
+  GtkColumnViewColumn *column = gtk_column_view_column_new ("Name",
+  NULL);
+  gtk_column_view_append_column(NULL, column);
+  gtk_window_set_child (GTK_WINDOW (window), col);
+
+  button = gtk_button_new_with_label ("Hello World");
+
+  g_signal_connect (button, "clicked", G_CALLBACK (print_hello), NULL);
+  
+
+  gtk_box_append (GTK_BOX (box), button);
+
+  gtk_window_present (GTK_WINDOW (window));
+}
+
+int
+main (int    argc,
+      char **argv)
+{
+  GtkApplication *app;
+  int status;
+
+  app = gtk_application_new ("org.gtk.example", G_APPLICATION_DEFAULT_FLAGS);
+  g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
+  status = g_application_run (G_APPLICATION (app), argc, argv);
+  g_object_unref (app);
+
+  return status;
 }
