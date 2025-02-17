@@ -22,7 +22,7 @@ void TreeModel(const gchar *pathdir, GtkTreeStore *tree_store, GtkTreeIter *curr
         gtk_tree_store_set(tree_store, current, COLUMN_NAME, g_strdup(filename), -1);
 
         if (g_file_test(full_path, G_FILE_TEST_IS_DIR)) {
-            buildTreeModel(full_path, tree_store, &iter, current);
+            TreeModel(full_path, tree_store, &iter, current);
         }
 
         g_free(full_path);
