@@ -1,6 +1,4 @@
-CFLAGS = -Wall -g `pkg-config --cflags libconfig`
-
-LDFLAGS = `pkg-config --libs libconfig`
+CFLAGS = -Wall -Wextra -Wpedantic -std=c11
 
 EXEC =  my_prog
 
@@ -9,7 +7,7 @@ SRC =  main.c
 OBJ =  main.o
 
 $(EXEC): $(OBJ)
-	 gcc -o $@ $^ $(CFLAGS) $(LDFLAGS)
+	 gcc -o $@ $^ $(CFLAGS)
 
 %.o: %.c
 	 gcc -c -o $@ $< $(CFLAGS)
