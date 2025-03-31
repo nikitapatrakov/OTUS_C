@@ -38,30 +38,33 @@ int connectHost() {
     return sockfd;
 }
 
+int readDate(char *buffer, int fd) {
+    memset(buffer, 0, BUF_SIZE);
+    int len = 0, r = 0;
+    while((r = recv(fd, &buffer[len], BUF_SIZE, 0)) > 0) {
+        len += r;
+        if (buffer[len-1] == '.' && buffer[len-2] == '\n') break;
+    }
+    buffer[len] = '\0';
+    return len;
+}
+
 int main(int argc, char *argv[]) {
     if (argc < 2) {
         perror("no arguments");
         exit(EXIT_FAILURE);
     }
-    int sockfd;
+    int sockfd, lenDate;
     char msg[MSG_LEN];
-    sprintf(msg, "figlet /%s %s", argv[1], argv[2]);
+    sprintf(msg, "figlet /%s %s\r\n", argv[1], argv[2]);
     sockfd = connectHost();
     char buffer[BUF_SIZE];
-    int len = 0, r = 0;
-    while((r = recv(sockfd, &buffer[len], BUF_SIZE, 0)) > 0) {
-        len += r;
-        if (buffer[len-1] == '.' && buffer[len-2] == '\n') break;
-    }
+    readDate(buffer, sockfd);
     if ((send(sockfd, msg, strlen(msg), 0)) == -1) {
         perror("send");
         exit(EXIT_FAILURE);
     }
-    len = 0, r = 0;
-    if ((recv(sockfd, &buffer[len], BUF_SIZE, 0)) == -1) {
-        perror("recv");
-        exit(EXIT_FAILURE);
-    }
+    readDate(buffer, sockfd);
     printf("%s", buffer);
     exit(EXIT_SUCCESS);
 }
