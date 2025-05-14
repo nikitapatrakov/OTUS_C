@@ -1,0 +1,17 @@
+services:
+
+  postgres:
+    image: postgres:17-alpine
+    container_name: psgr
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: mydata
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./initbd:/docker-entrypoint-initdb.d
+
+volumes:
+  postgres-data:
