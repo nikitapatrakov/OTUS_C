@@ -1,6 +1,8 @@
 #include "SDL2/SDL.h"
-#include <GL/gl.h>
-#include <GL/glu.h>
+//#include <GL/gl.h>
+//#include <GL/glu.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -56,17 +58,49 @@ void updateScene()
 {
 	glLoadIdentity();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  	glRotatef(g_angle, 0,1.0,1.0);
-	glBegin(GL_TRIANGLES);
-	glColor3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f);
-	glVertex3f(0.5f, 0.0f, 0.0f);
-	glVertex3f(0.0f, -0.5f, 0.0f);
+  	glRotatef(g_angle, 1.0,1.0,0.0);
+	glBegin(GL_QUADS);
+	// Передняя грань (красная)
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glVertex3f( 0.5f,  0.5f,  0.5f);
+    glVertex3f(-0.5f,  0.5f,  0.5f);
+    glVertex3f(-0.5f, -0.5f,  0.5f);
+    glVertex3f( 0.5f, -0.5f,  0.5f);
 
-	glColor3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f);
-	glVertex3f(0.0f, 0.5f, 0.0f);
-	glVertex3f(-0.5f, 0.0f, 0.0f);
+    // Задняя грань (зелёная)
+    glColor3f(0.0f, 1.0f, 0.0f);
+    glVertex3f( 0.5f, -0.5f, -0.5f);
+    glVertex3f(-0.5f, -0.5f, -0.5f);
+    glVertex3f(-0.5f,  0.5f, -0.5f);
+    glVertex3f( 0.5f,  0.5f, -0.5f);
+
+    // Левая грань (синяя)
+    glColor3f(0.0f, 0.0f, 1.0f);
+    glVertex3f(-0.5f,  0.5f,  0.5f);
+    glVertex3f(-0.5f,  0.5f, -0.5f);
+    glVertex3f(-0.5f, -0.5f, -0.5f);
+    glVertex3f(-0.5f, -0.5f,  0.5f);
+
+    // Правая грань (жёлтая)
+    glColor3f(1.0f, 1.0f, 0.0f);
+    glVertex3f( 0.5f,  0.5f, -0.5f);
+    glVertex3f( 0.5f,  0.5f,  0.5f);
+    glVertex3f( 0.5f, -0.5f,  0.5f);
+    glVertex3f( 0.5f, -0.5f, -0.5f);
+
+    // Верхняя грань (фиолетовая)
+    glColor3f(1.0f, 0.0f, 1.0f);
+    glVertex3f( 0.5f,  0.5f, -0.5f);
+    glVertex3f(-0.5f,  0.5f, -0.5f);
+    glVertex3f(-0.5f,  0.5f,  0.5f);
+    glVertex3f( 0.5f,  0.5f,  0.5f);
+
+    // Нижняя грань (голубая)
+    glColor3f(0.0f, 1.0f, 1.0f);
+    glVertex3f( 0.5f, -0.5f,  0.5f);
+    glVertex3f(-0.5f, -0.5f,  0.5f);
+    glVertex3f(-0.5f, -0.5f, -0.5f);
+    glVertex3f( 0.5f, -0.5f, -0.5f);
 
 	glEnd();
 	glPopMatrix();
@@ -115,7 +149,7 @@ int main()
 			}
 		}
 		g_angle = g_angle + 1 % 360;
-		usleep(10000); // 10 мс.
+		usleep(10000);
 		updateScene();
 		SDL_GL_SwapWindow(g_Window);
 	}
